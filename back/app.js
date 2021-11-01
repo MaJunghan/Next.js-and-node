@@ -1,10 +1,9 @@
 const express = require("express");
+const psotRouter = require("./routes/post");
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Hello node");
-});
+app.use("/post", psotRouter);
 
 app.listen(3060, () => {
   console.log("서버 실행중");
