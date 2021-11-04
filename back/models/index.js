@@ -10,11 +10,12 @@ const sequelize = new Sequelize(
   config
 );
 
-const User = require("./user")(sequelize, Sequelize);
-const Post = require("./post")(sequelize, Sequelize);
-const Image = require("./image")(sequelize, Sequelize);
-const Hashtag = require("./hashtag")(sequelize, Sequelize);
-const Comment = require("./comment")(sequelize, Sequelize);
+// 각각의 db모듈을 db에넣고 해당 db를 반복문 으로돌려서 테이블생성
+db.User = require("./user")(sequelize, Sequelize);
+db.Post = require("./post")(sequelize, Sequelize);
+db.Image = require("./image")(sequelize, Sequelize);
+db.Hashtag = require("./hashtag")(sequelize, Sequelize);
+db.Comment = require("./comment")(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
@@ -22,6 +23,7 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
+// db안에 시퀄라이즈를 넣어서 app.js express에 부착
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

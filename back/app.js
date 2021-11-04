@@ -4,6 +4,7 @@ const userRouter = require("./routes/user");
 const db = require("./models");
 const app = express();
 
+// express에 db등록
 db.sequelize
   .sync()
   .then(() => {
