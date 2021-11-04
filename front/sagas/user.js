@@ -68,7 +68,7 @@ function signUpAPI(data) {
 function* signUp(action) {
   try {
     const result = yield call(signUpAPI, action.data);
-    yield delay(1000);
+    console.log(result);
     yield put({
       type: SIGN_UP_SUCCESS,
     });

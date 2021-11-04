@@ -1,4 +1,6 @@
 const express = require("express");
+const cors = require("cors");
+
 const psotRouter = require("./routes/post");
 const userRouter = require("./routes/user");
 const db = require("./models");
@@ -16,9 +18,15 @@ db.sequelize
 app.use(express.json()); //  json 형태의 값을 req.body에 넣어줌
 app.use(express.urlencoded({ extended: true })); // url 인코딩 방식으로 req.body에 넣어줌
 
+app.use(
+  cors({
+    origin: "*",
+    credentials: false,
+  })
+);
 app.use("/post", psotRouter);
 app.use("/user", userRouter);
 
-app.listen(3060, () => {
+app.listen(3065, () => {
   console.log("서버 실행중");
 });

@@ -15,11 +15,11 @@ router.post("/", async (req, res, next) => {
       return res.status(403).send("이미 사용 중인 이메일입니다.");
     }
     // 비밀번호 암호화 10~12정도 높을수록 더 암호화가 정밀해짐 . 높을수록 속도저하
-    const hashPassword = await bcrypt.hash(req.body.password, 10);
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
     await User.create({
       email: req.body.email,
       nickname: req.body.nickname,
-      password: hashPassword,
+      password: hashedPassword,
     });
     res.status(201).send("ok");
   } catch (error) {
