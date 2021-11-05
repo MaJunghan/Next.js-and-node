@@ -2,7 +2,24 @@ const express = require("express");
 const router = express.Router();
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
+const passport = require("passport");
 
+// 로그인 /user/login
+router.post("/login", (req, res, next) => {
+  // done의 callback이 다시옴   서버, 성공, 클라이언트에러
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      console.log(err);
+      return next(err);
+    }
+    if (info) {
+      return res.status(403).send(info.reason);
+    }
+    return res.json(user);
+  })(req, res, next);
+});
+
+// 회원가입 /user
 router.post("/", async (req, res, next) => {
   try {
     // Db저장하기전에 이메일 중복 확인
