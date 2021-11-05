@@ -15,7 +15,16 @@ router.post("/login", (req, res, next) => {
     if (info) {
       return res.status(403).send(info.reason);
     }
-    return res.json(user);
+    // req.login passport의 로그인 => 다통과하면 passport를 한번더 실행하기떄문
+    // 혹시나 싶어서해주는것.
+    return req.login(user, async (loginErr) => {
+      if (loginErr) {
+        console.error(loginErr);
+        return next(loginErr);
+      }
+      // 성공
+      return res.status(200).json(user);
+    });
   })(req, res, next);
 });
 
