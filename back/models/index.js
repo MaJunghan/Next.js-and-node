@@ -1,4 +1,10 @@
 const Sequelize = require("sequelize");
+const comment = require("./comment");
+const hashtag = require("./hashtag");
+const image = require("./image");
+const post = require("./post");
+const user = require("./user");
+
 const env = process.env.NODE_ENV || "development";
 const config = require("../config/config")[env];
 const db = {};
@@ -10,12 +16,15 @@ const sequelize = new Sequelize(
   config
 );
 
-// 각각의 db모듈을 db에넣고 해당 db를 반복문 으로돌려서 테이블생성
-db.User = require("./user")(sequelize, Sequelize);
-db.Post = require("./post")(sequelize, Sequelize);
-db.Image = require("./image")(sequelize, Sequelize);
-db.Hashtag = require("./hashtag")(sequelize, Sequelize);
-db.Comment = require("./comment")(sequelize, Sequelize);
+db.Comment = comment;
+db.Hashtag = hashtag;
+db.Image = image;
+db.Post = post;
+db.User = user;
+
+Object.keys(db).forEach((modelName) => {
+  db[modelName].init(sequelize);
+});
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
@@ -23,7 +32,6 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-// db안에 시퀄라이즈를 넣어서 app.js express에 부착
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
