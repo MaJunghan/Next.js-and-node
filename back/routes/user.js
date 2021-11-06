@@ -1,29 +1,54 @@
 const express = require("express");
 const router = express.Router();
-const { User } = require("../models");
+const { User, Post } = require("../models");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 
+// 로그아웃
+router.post("/logout", (req, res) => {
+  req.logout();
+  req.session.destroy();
+  res.send("ok");
+});
+
 // 로그인 /user/login
 router.post("/login", (req, res, next) => {
-  // done의 callback이 다시옴   서버, 성공, 클라이언트에러
   passport.authenticate("local", (err, user, info) => {
     if (err) {
-      console.log(err);
+      console.error(err);
       return next(err);
     }
     if (info) {
-      return res.status(403).send(info.reason);
+      return res.status(401).send(info.reason);
     }
-    // req.login passport의 로그인 => 다통과하면 passport를 한번더 실행하기떄문
-    // 혹시나 싶어서해주는것.
     return req.login(user, async (loginErr) => {
       if (loginErr) {
         console.error(loginErr);
         return next(loginErr);
       }
-      // 성공
-      return res.status(200).json(user);
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: user.id },
+        attributes: {
+          exclude: ["password"],
+        },
+        include: [
+          {
+            model: Post,
+            attributes: ["id"],
+          },
+          {
+            model: User,
+            as: "Followings",
+            attributes: ["id"],
+          },
+          {
+            model: User,
+            as: "Followers",
+            attributes: ["id"],
+          },
+        ],
+      });
+      return res.status(200).json(fullUserWithoutPassword);
     });
   })(req, res, next);
 });

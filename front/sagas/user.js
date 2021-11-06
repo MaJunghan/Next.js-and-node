@@ -20,12 +20,12 @@ import {
 } from "../reducers/user";
 
 function logInAPI(data) {
-  return axios.post("/api/login", data);
+  console.log("도착했나?데이터", data);
+  return axios.post("/user/login", data);
 }
 
 function* logIn(action) {
   try {
-    console.log("saga logIn");
     const result = yield call(logInAPI, action.data);
     yield put({
       type: LOG_IN_SUCCESS,
@@ -40,14 +40,13 @@ function* logIn(action) {
   }
 }
 
-// function logOutAPI() {
-//   return axios.post("/api/logout");
-// }
+function logOutAPI(data) {
+  return axios.post("/user/logout", data);
+}
 
-function* logOut() {
+function* logOut(action) {
   try {
-    // const result = yield call(logOutAPI);
-    yield delay(1000);
+    yield call(logOutAPI, action.data);
     yield put({
       type: LOG_OUT_SUCCESS,
     });
