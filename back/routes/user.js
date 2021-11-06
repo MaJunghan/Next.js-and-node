@@ -3,6 +3,7 @@ const router = express.Router();
 const { User, Post } = require("../models");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
+const { isNotLoggedIn } = require("./middlewares");
 
 // 로그아웃
 router.post("/logout", (req, res) => {
@@ -12,7 +13,7 @@ router.post("/logout", (req, res) => {
 });
 
 // 로그인 /user/login
-router.post("/login", (req, res, next) => {
+router.post("/login", isNotLoggedIn, (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       console.error(err);
@@ -54,7 +55,7 @@ router.post("/login", (req, res, next) => {
 });
 
 // 회원가입 /user
-router.post("/", async (req, res, next) => {
+router.post("/", isNotLoggedIn, async (req, res, next) => {
   try {
     // Db저장하기전에 이메일 중복 확인
     const exUser = await User.findOne({
