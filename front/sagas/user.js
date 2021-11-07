@@ -39,13 +39,13 @@ function* logIn(action) {
   }
 }
 
-function logOutAPI(data) {
-  return axios.post("/user/logout", data);
+function logOutAPI() {
+  return axios.post("/user/logout");
 }
 
-function* logOut(action) {
+function* logOut() {
   try {
-    yield call(logOutAPI, action.data);
+    yield call(logOutAPI);
     yield put({
       type: LOG_OUT_SUCCESS,
     });

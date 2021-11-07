@@ -3,10 +3,10 @@ const router = express.Router();
 const { User, Post } = require("../models");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
-const { isNotLoggedIn } = require("./middlewares");
+const { isNotLoggedIn, isLoggedIn } = require("./middlewares");
 
 // 로그아웃
-router.post("/logout", (req, res) => {
+router.post("/logout", isLoggedIn, (req, res) => {
   req.logout();
   req.session.destroy();
   res.send("ok");

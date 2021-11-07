@@ -25,8 +25,8 @@ dotenv.config();
 
 app.use(
   cors({
-    origin: "*",
-    credentials: false,
+    origin: "http://localhost:3000",
+    credentials: true,
   })
 );
 // req.body사용하려면 해당 미들웨어를 설정해줘야함.
