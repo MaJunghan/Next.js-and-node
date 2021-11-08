@@ -5,6 +5,7 @@ import PostForm from "../components/PostForm";
 import PostCard from "../components/PostCard";
 import AppLayout from "../components/AppLayout";
 import { LOAD_POSTS_REQUEST } from "../reducers/post";
+import { LOAD_USER_REQUEST } from "../reducers/user";
 
 const Index = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,9 @@ const Index = () => {
   );
 
   useEffect(() => {
+    dispatch({
+      type: LOAD_USER_REQUEST,
+    });
     dispatch({
       type: LOAD_POSTS_REQUEST,
     });

@@ -5,6 +5,40 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 const { isNotLoggedIn, isLoggedIn } = require("./middlewares");
 
+// 로그인 정보 가져오기
+router.get("/", async (req, res) => {
+  try {
+    if (req.user) {
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: req.user.id },
+        attributes: {
+          exclude: ["password"],
+        },
+        include: [
+          {
+            model: Post,
+            attributes: ["id"],
+          },
+          {
+            model: User,
+            as: "Followings",
+          },
+          {
+            model: User,
+            as: "Followers",
+          },
+        ],
+      });
+      res.status(200).json(fullUserWithoutPassword);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 // 로그아웃
 router.post("/logout", isLoggedIn, (req, res) => {
   req.logout();
