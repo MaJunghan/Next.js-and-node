@@ -1,16 +1,16 @@
-import { Button, Form, Input } from "antd";
+import { Form, Input, Button } from "antd";
 import React, { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import useInput from "../hooks/useInput";
 import { ADD_COMMENT_REQUEST } from "../reducers/post";
 
 const CommentForm = ({ post }) => {
   const dispatch = useDispatch();
+  const id = useSelector((state) => state.user.me?.id);
   const { addCommentDone, addCommentLoading } = useSelector(
     (state) => state.post
   );
-  const id = useSelector((state) => state.user.me?.id);
   const [commentText, onChangeCommentText, setCommentText] = useInput("");
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const CommentForm = ({ post }) => {
   const onSubmitComment = useCallback(() => {
     dispatch({
       type: ADD_COMMENT_REQUEST,
-      data: { content: commentText, userId: id, postId: post.id },
+      data: { content: commentText, postId: post.id, userId: id },
     });
   }, [commentText, id]);
 
@@ -30,12 +30,12 @@ const CommentForm = ({ post }) => {
     <Form onFinish={onSubmitComment}>
       <Form.Item style={{ position: "relative", margin: 0 }}>
         <Input.TextArea
-          rows={4}
           value={commentText}
           onChange={onChangeCommentText}
+          rows={4}
         />
         <Button
-          style={{ position: "absolute", right: 0, bottom: -40 }}
+          style={{ position: "absolute", right: 0, bottom: -40, zIndex: 1 }}
           type="primary"
           htmlType="submit"
           loading={addCommentLoading}

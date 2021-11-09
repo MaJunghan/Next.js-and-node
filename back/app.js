@@ -4,11 +4,13 @@ const cors = require("cors");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
-const psotRouter = require("./routes/post");
+const postsRouter = require("./routes/posts");
+const postRouter = require("./routes/post");
 const userRouter = require("./routes/user");
 const db = require("./models");
 const passportCinfig = require("./passport");
 const dotenv = require("dotenv");
+const morgan = require("morgan");
 
 // express에 db등록
 db.sequelize
@@ -42,9 +44,11 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(morgan("dev"));
 
-app.use("/post", psotRouter);
+app.use("/post", postRouter);
 app.use("/user", userRouter);
+app.use("/posts", postsRouter);
 
 app.listen(3065, () => {
   console.log("서버 실행중");
