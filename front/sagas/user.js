@@ -2,8 +2,8 @@ import { all, delay, fork, put, takeLatest, call } from "redux-saga/effects";
 import axios from "axios";
 
 import {
-  FOLLOW_FAILURE,
   FOLLOW_REQUEST,
+  FOLLOW_FAILURE,
   FOLLOW_SUCCESS,
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
