@@ -5,6 +5,22 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 const { isNotLoggedIn, isLoggedIn } = require("./middlewares");
 
+// 닉네임변경
+router.patch("/nickname", isLoggedIn, async (req, res, next) => {
+  try {
+    User.update(
+      {
+        nickname: req.body.nickname,
+      },
+      { where: { id: req.user.id } }
+    );
+    res.status(200).json({ nickname: req.body.nickname });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 // 로그인 정보 가져오기
 router.get("/", async (req, res) => {
   try {

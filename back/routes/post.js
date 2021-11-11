@@ -4,6 +4,22 @@ const router = express.Router();
 const { Post, Image, Comment, User } = require("../models");
 const { isLoggedIn } = require("./middlewares");
 
+// 게시글삭제
+router.delete(`/:postId/`, isLoggedIn, async (req, res, next) => {
+  try {
+    await Post.destroy({
+      where: {
+        id: req.params.postId,
+        UserId: req.user.id,
+      },
+    });
+    res.json({ PostId: parseInt(req.params.postId, 10) });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 router.patch(`/:postId/like`, async (req, res, next) => {
   // 좋아요
   try {
