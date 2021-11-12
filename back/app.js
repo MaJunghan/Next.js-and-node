@@ -11,6 +11,7 @@ const db = require("./models");
 const passportCinfig = require("./passport");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+const path = require("path");
 
 // express에 db등록
 db.sequelize
@@ -32,6 +33,7 @@ app.use(
   })
 );
 // req.body사용하려면 해당 미들웨어를 설정해줘야함.
+app.use("/", express.static(path.join(__dirname, "uploads")));
 app.use(express.json()); //  json 형태의 값을 req.body에 넣어줌
 app.use(express.urlencoded({ extended: true })); // url 인코딩 방식으로 req.body에 넣어줌
 app.use(cookieParser(process.env.COOKIE_SECRET));
