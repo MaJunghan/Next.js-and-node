@@ -7,6 +7,7 @@ import wrapper from "../store/configureStore";
 const NodeBird = ({ Component }) => (
   <>
     <Head>
+      <mata charSet="utf-8" />
       <title>NodeBird!!!!</title>
     </Head>
     <Component />
