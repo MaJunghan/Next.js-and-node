@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next"
+    "dev": "next",
+    "build": "cross-env NODE_ENV=production ANALYZE=true next build"
   },
   "author": "MaJungHan",
   "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@next/bundle-analyzer": "^12.0.3",
     "antd": "^4.16.13",
     "axios": "^0.24.0",
+    "cross-env": "^7.0.3",
     "faker": "^5.5.3",
     "immer": "^9.0.6",
     "next": "^9.5.5",
